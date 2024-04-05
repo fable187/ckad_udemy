@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airflow-config
+  namespace: local-dev
+data:
+  airflow.cfg: |
+    [core]
+    executor = KubernetesExecutor
+    load_examples = False
+    dags_are_paused_at_creation = True
+    sql_alchemy_conn = postgresql+psycopg2://airflow:airflow@postgres/airflow
+    [kubernetes]
+    namespace = local-dev
+    delete_worker_pods = True
