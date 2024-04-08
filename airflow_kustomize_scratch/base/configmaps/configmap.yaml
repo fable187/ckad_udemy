@@ -7,7 +7,7 @@ data:
   airflow.cfg: |
     [core]
     executor = KubernetesExecutor
-    load_examples = False
+    load_examples = True
     dags_are_paused_at_creation = True
     sql_alchemy_conn = postgresql+psycopg2://airflow:airflow@postgres-service:5432/airflow
     [kubernetes]
@@ -21,4 +21,13 @@ data:
     base_url = http://localhost:8080
     web_server_host = 0.0.0.0
     web_server_port = 8080
-
+  init_airflow.sh: |
+    airflow db upgrade
+    airflow db init
+    airflow users create \
+    --username admin \
+    --firstname Admin \
+    --lastname User \
+    --role Admin \
+    --email admin@example.com \
+    --password admin
