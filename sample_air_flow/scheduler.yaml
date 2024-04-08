@@ -21,3 +21,11 @@ spec:
             configMapKeyRef:
               name: airflow-config
               key: airflow.cfg
+        volumeMounts:
+        - name: dags-volume
+          mountPath: /usr/local/dags
+      volumes:
+      - name: dags-volume
+        hostPath:
+          path: C:\Users\gaela\CKAD_Udemy\dags
+          type: DirectoryOrCreate
