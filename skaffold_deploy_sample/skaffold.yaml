@@ -1,0 +1,39 @@
+apiVersion: skaffold/v2beta22
+kind: Config
+metadata:
+  name: airflow-project
+
+build:
+  artifacts:
+    - image: airflow:latest
+      context: .
+      docker:
+        dockerfile: Dockerfile
+
+# You can omit the deploy section altogether for the default profile
+# and specify it only under profiles if needed for other environments
+
+profiles:
+  - name: local-dev
+    activation:
+      - kubeContext: docker-desktop  # Adjust according to your local context
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: airflow
+          docker:
+            dockerfile: Dockerfile
+
+    deploy:
+      kubectl:
+        flags:
+          apply:
+            - "-k"
+            - "./base"
+    # Explicitly disable deployment for local development
+    # deploy:
+    #   # Using a dummy deployer that does nothing
+    #   exec:
+    #     command: echo "Deploy manually as needed"
+ 
